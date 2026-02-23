@@ -1,0 +1,22 @@
+{
+  "name": "ytprivdl",
+  "version": "1.0.0",
+  "description": "YouTube Members-Only Downloader (Educational Use Only)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "youtube",
+    "downloader",
+    "yt-dlp",
+    "members-only",
+    "nodejs",
+    "express"
+  ],
+  "author": "Your Name",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
