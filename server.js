@@ -8,7 +8,7 @@ const app = express();
 app.use(cors({
   origin: "https://yt-insta.vercel.app"
 }));
-const port = 5000; // The port the server will listen on
+const port = process.env.PORT || 5000; // The port the server will listen on
 
 // Middleware to parse JSON request bodies
 app.use(express.json());
@@ -176,3 +176,4 @@ app.listen(port, () => {
     console.log(`Open your browser and navigate to http://localhost:${port}`);
     console.log('Remember to place your cookies.txt file in the project root (optional for public content) and ensure yt-dlp is installed globally.');
 });
+
