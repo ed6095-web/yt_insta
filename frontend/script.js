@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
         showToast('Fetching video information... This might take a moment.', 'info');
 
         try {
-            const response = await fetch('https://yt-insta.onrender.com', {
+    const response = await fetch('https://yt-insta.onrender.com/get-video-info', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ videoLink })
@@ -272,4 +272,3 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
-
