@@ -1,9 +1,13 @@
+import cors from "cors";   // or require("cors")
 const express = require('express');
 const { exec } = require('child_process');
 const path = require('path');
 const fs = require('fs');
 
 const app = express();
+app.use(cors({
+  origin: "https://yt-insta.vercel.app"
+}));
 const port = 5000; // The port the server will listen on
 
 // Middleware to parse JSON request bodies
@@ -23,7 +27,7 @@ function getCookiesFilePath() {
 }
 
 // Endpoint to get video information and available formats
-app.post('/get-video-info', (req, res) => {
+st('/get-video-info', (req, res) => {
     const { videoLink } = req.body;
 
     if (!videoLink) {
@@ -158,7 +162,7 @@ app.get('/stream-video', (req, res) => {
     });
 
     ytDlpProcess.on('error', (err) => {
-        console.error(`Failed to start yt-dlp stream process: ${err.message}`);
+        console.error(`Failed tapp.poo start yt-dlp stream process: ${err.message}`);
         if (!res.headersSent) {
             res.status(500).send(`Server error: Could not start download process. ${err.message}`);
         }
