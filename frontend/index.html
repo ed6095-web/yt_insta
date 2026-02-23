@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎥 Universal Video Downloader</title>
+    <!-- Google Font: Poppins for headings, Inter for body text -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Custom styles -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="light-mode">
+    <!-- Main Full-Screen Container -->
+    <div class="main-container flex items-center justify-center p-4">
+        <!-- Dark Mode Toggle Button -->
+        <button id="darkModeToggle" class="absolute top-4 right-4 p-2 rounded-full bg-gray-200 dark:bg-gray-700 shadow-md transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-purple-500 z-50">
+            <i class="fas fa-moon text-gray-700 dark:text-yellow-400 text-xl"></i>
+        </button>
+
+        <!-- Main Downloader Card -->
+        <div id="downloaderCard" class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-2xl w-full max-w-md border border-gray-200 dark:border-gray-700 relative overflow-hidden card-animation">
+            <!-- Background gradient overlay for aesthetic look -->
+            <div class="absolute inset-0 bg-gradient-to-br from-purple-50 to-pink-50 opacity-50 dark:from-gray-900 dark:to-gray-700 -z-10 rounded-2xl"></div>
+
+            <h1 class="text-4xl font-poppins font-bold text-center text-purple-800 dark:text-purple-300 mb-4 drop-shadow-sm">
+                🎥 Universal Video Downloader
+            </h1>
+            <p class="text-center text-gray-700 dark:text-gray-300 mb-8 text-lg font-inter">
+                Paste any YouTube or Instagram video/post link to download.
+            </p>
+
+            <!-- Form for Video Link Input -->
+            <form id="infoForm" class="space-y-6">
+                <div>
+                    <label for="videoLink" class="block text-sm font-inter font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <i class="fas fa-link text-cyan-600 dark:text-cyan-400 mr-2"></i>Video Link:
+                    </label>
+                    <div class="relative">
+                        <input
+                            type="url"
+                            id="videoLink"
+                            name="videoLink"
+                            placeholder="e.g., https://www.youtube.com/watch?v=VIDEO_ID"
+                            required
+                            class="block w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 dark:focus:ring-cyan-400 focus:border-cyan-500 dark:focus:border-cyan-400 sm:text-base transition-all duration-300 ease-in-out input-glow bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                        >
+                        <!-- Tooltip for suggestions -->
+                        <div id="urlTooltip" class="absolute z-10 p-2 bg-gray-800 text-white text-xs rounded-md shadow-lg hidden opacity-0 transition-opacity duration-300">
+                            Try: https://www.youtube.com/watch?v=VIDEO_ID <br> Or: https://www.instagram.com/p/POST_ID/
+                        </div>
+                    </div>
+                </div>
+
+                <button
+                    type="submit"
+                    id="getInfoButton"
+                    class="w-full flex items-center justify-center py-3 px-4 border border-transparent rounded-lg shadow-lg text-lg font-semibold text-white bg-gradient-to-r from-purple-600 to-purple-800 hover:from-purple-700 hover:to-purple-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all duration-150 ease-in-out button-glow pulse-animation"
+                >
+                    <span id="getInfoButtonText">Get Video Info</span>
+                    <i id="getInfoLoadingSpinner" class="fas fa-spinner fa-spin ml-3 hidden"></i>
+                </button>
+            </form>
+
+            <!-- Video Info and Quality Selection Section (Initially Hidden) -->
+            <div id="videoInfoSection" class="mt-8 hidden slide-in-animation">
+                <h2 class="text-xl font-poppins font-semibold text-gray-800 dark:text-gray-200 mb-4">Video Details:</h2>
+                <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg border border-gray-200 dark:border-gray-600 flex flex-col sm:flex-row items-center shadow-inner">
+                    <img id="videoThumbnail" src="https://placehold.co/120x90/cccccc/333333?text=Thumbnail" alt="Video Thumbnail" class="w-32 h-24 object-cover rounded-md mb-4 sm:mb-0 sm:mr-4 border border-gray-300 dark:border-gray-500">
+                    <div class="flex-grow text-center sm:text-left">
+                        <p id="videoTitle" class="font-semibold text-gray-800 dark:text-gray-100 text-md line-clamp-2 font-inter">Video Title</p>
+                        <p id="videoUploader" class="text-sm text-gray-600 dark:text-gray-400 font-inter">Uploader Name</p>
+                    </div>
+                </div>
+
+                <h3 class="text-lg font-poppins font-semibold text-gray-800 dark:text-gray-200 mt-6 mb-3">Select Quality to Download:</h3>
+                <div id="qualityOptions" class="grid grid-cols-2 gap-3">
+                    <!-- Quality buttons will be dynamically inserted here -->
+                </div>
+
+                <button
+                    type="button"
+                    id="resetButton"
+                    class="mt-6 w-full flex items-center justify-center py-2 px-4 border border-transparent rounded-lg shadow-lg text-md font-semibold text-white bg-gray-500 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-all duration-150 ease-in-out button-glow"
+                >
+                    <i class="fas fa-arrow-left mr-2"></i> New Download
+                </button>
+            </div>
+        </div>
+
+        <!-- Toast Notification Container -->
+        <div id="toastContainer" class="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 space-y-2 w-full max-w-sm">
+            <!-- Toasts will be appended here -->
+        </div>
+
+        <!-- Floating Help Button -->
+        <button id="helpButton" class="fixed bottom-4 right-4 p-3 rounded-full bg-purple-600 dark:bg-purple-700 text-white shadow-lg transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-purple-500 z-40">
+            <i class="fas fa-question text-xl"></i>
+        </button>
+
+        <!-- Help Modal (Initially Hidden) -->
+        <div id="helpModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden modal-animation">
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl w-full max-w-md relative backdrop-blur-sm">
+                <button id="closeModalButton" class="absolute top-3 right-3 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 text-2xl font-bold">
+                    &times;
+                </button>
+                <h2 class="text-2xl font-poppins font-bold text-gray-800 dark:text-gray-100 mb-4">How to Use:</h2>
+                <ul class="list-disc list-inside text-gray-700 dark:text-gray-300 space-y-2 font-inter">
+                    <li>Paste a YouTube or Instagram video/post link into the input field.</li>
+                    <li>Click "Get Video Info" to fetch details and available qualities.</li>
+                    <li>Select your desired quality from the options.</li>
+                    <li>The video will start downloading directly to your browser's downloads.</li>
+                    <li>Ensure your `cookies.txt` is up-to-date for private/members-only content.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
