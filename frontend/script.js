@@ -243,7 +243,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             // Construct the download URL for the backend stream endpoint
             // Pass the original video URL and the selected height/extension
-            const downloadUrl = `http://localhost:5000/stream-video?url=${encodeURIComponent(currentVideoInfo.original_url)}&height=${encodeURIComponent(height)}&ext=${encodeURIComponent(ext || 'mp4')}`;
+            const downloadUrl = `https://yt-insta.onrender.com/stream-video?url=${encodeURIComponent(currentVideoInfo.original_url)}&height=${encodeURIComponent(height)}&ext=${encodeURIComponent(ext || 'mp4')}`;
 
             // Directly set window.location.href to trigger browser download
             // The backend will stream the file with appropriate headers
@@ -272,3 +272,4 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
